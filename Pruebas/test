@@ -2,3 +2,8 @@ main color -> #9183a0
 dark shadow -> #7c7186
 light shadow -> #a396b3
 background color -> #2e4557
+
+<i class="fa-solid fa-flag"></i>
+<i class="fa-duotone fa-flag"></i>
+<i class="fa-solid fa-bomb"></i>
+<i class="fa-duotone fa-bomb"></i>
