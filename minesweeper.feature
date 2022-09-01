@@ -14,3 +14,14 @@ Feature: MineSweeper
     In some versions of the game the number of adjacent mines is equal to the number of 
     adjacent flagged cells, all adjacent non-flagged unopened cells will be opened, 
     a process known as chording.
+
+    Background: Initial State
+        Given The Webpage is initiated
+        And The 8 by 8 board is shown
+        And All cells from the grid are non-flagged unopened
+        And The "New Game" button is shown
+        And The "Mines" button displays a 10
+        And The "Timer" button displays a 00:00
+    
+    Scenario: "New Game" Button clicking
+    
