@@ -17,11 +17,17 @@ Feature: MineSweeper
 
     Background: Initial State
         Given The Webpage is initiated
-        And The 8 by 8 board is shown
-        And All cells from the grid are non-flagged unopened
-        And The "New Game" button is shown
-        And The "Mines" button displays a 10
-        And The "Timer" button displays a 00:00
+        * The 8 by 8 board is shown
+        * All cells from the grid are non-flagged unopened
+        * The "New Game" button is shown
+        * The "Mines" button displays a 10
+        * The "Timer" button displays a 00:00
     
+    Background: Normal State
+        Given The Webpage is initiated
+        * The 8 by 8 board is shown
+        * The "New Game" button is shown
+        * The "Mines" button displays a 10 or lower number
+        * The "Timer" button doesn't display 00:00
+
     Scenario: "New Game" Button clicking
-    
