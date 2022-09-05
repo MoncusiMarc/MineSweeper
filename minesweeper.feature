@@ -11,30 +11,55 @@ Feature: MineSweeper
     Players can also flag a cell, visualised by a flag being put on the location, 
     to denote that they believe a mine to be in that place. 
     Flagged cells are still considered unopened, and a player can click on them to open them.
-    In some versions of the game the number of adjacent mines is equal to the number of 
-    adjacent flagged cells, all adjacent non-flagged unopened cells will be opened, 
-    a process known as chording.
 
     Background: Initial State
         Given The Webpage is initiated
         * The 8 by 8 board is shown
-        * All cells from the grid are non-flagged unopened
+        * All cells from the grid are non-flagged unopened and clickable
         * The New Game button is shown
-        * The Mines button displays a 10
-        * The Timer button displays a 00:00
+        * The Mines counter displays a 10
+        * The Timer counter displays a 00:00
     
     /*Background: Normal State
         Given The Webpage is initiated
         * The 8 by 8 board is shown
         * The New Game button is shown
-        * The Mines button displays a 10 or lower number
-        * The Timer button doesn't display 00:00
+        * The Mines counter displays a 10 or lower number
+        * The Timer counter doesn't display 00:00
     */
 
     Scenario: New Game Button clicking
-        When The user click on the New Game button
+        When The user left-clicks on the New Game button
         Then The Webpage returns to the Initial State
     
     Scenario: Timer Starting
-        When The user click on a cell
-        Then The Timer should start running
+        When The user clicks on a cell
+        Then The Timer starts running
+    
+    Scenario: Flag a cell
+        When The user right-clicks on a non-flagged unopened cell
+        Then The cell becomes a flagged unopened cell
+        * The Mines counter drops by 1
+
+    Scenario: Unflag a cell
+        When The user right-clicks on a flagged unopened cell
+        Then The cell becomes a non-flagged unopened cell
+        * The Mines counter increases by 1
+    
+    Scenario: Opening a mined cell
+        When The user left-clicks on a mined cell
+        Then The cell opens
+        * The Timer stops
+        * The non-flagged unopened mined cells open
+        * The flagged unopened numbered cells open and display a cross
+        * The cells become unclickable
+    
+    Scenario: Opening a numbered cell
+        When The user left-clicks on a numbered cell
+        Then The cell opens
+        * The cell becomes unclickable
+    
+    Scenario: Opening a numbered cell equal to 0
+        When A "0" numbered cell opens
+        Then The 8 adjacent cells open
+        * The cells become unclickable
