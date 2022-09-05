@@ -19,15 +19,22 @@ Feature: MineSweeper
         Given The Webpage is initiated
         * The 8 by 8 board is shown
         * All cells from the grid are non-flagged unopened
-        * The "New Game" button is shown
-        * The "Mines" button displays a 10
-        * The "Timer" button displays a 00:00
+        * The New Game button is shown
+        * The Mines button displays a 10
+        * The Timer button displays a 00:00
     
-    Background: Normal State
+    /*Background: Normal State
         Given The Webpage is initiated
         * The 8 by 8 board is shown
-        * The "New Game" button is shown
-        * The "Mines" button displays a 10 or lower number
-        * The "Timer" button doesn't display 00:00
+        * The New Game button is shown
+        * The Mines button displays a 10 or lower number
+        * The Timer button doesn't display 00:00
+    */
 
-    Scenario: "New Game" Button clicking
+    Scenario: New Game Button clicking
+        When The user click on the New Game button
+        Then The Webpage returns to the Initial State
+    
+    Scenario: Timer Starting
+        When The user click on a cell
+        Then The Timer should start running
