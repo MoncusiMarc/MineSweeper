@@ -12,8 +12,8 @@ Feature: MineSweeper
     to denote that they believe a mine to be in that place. 
     Flagged cells are still considered unopened, and a player can click on them to open them.
 
-    Rule: The Game is Initial State
-        Background: 
+    //Rule: The Game is 
+        Background: Initial State
             Given The Webpage is initiated
             * The 8 by 8 board is shown
             * All cells from the grid are non-flagged unopened and clickable
@@ -21,14 +21,18 @@ Feature: MineSweeper
             * The Mines counter displays a 10
             * The Timer counter displays a 00:00
 
-    Rule: The Game is in a Normal State
-        Background: 
-            Given The Webpage is initiated
-            * The 8 by 8 board is shown
-            * The New Game button is shown
-            * The Mines counter displays a 10 or lower number
-            * The Timer counter doesn't display 00:00
     
+    //Rule: The Game is in a Normal State
+    //    Background: 
+    //        Given The Webpage is initiated
+    //        * The 8 by 8 board is shown
+    //        * The New Game button is shown
+    //        * The Mines counter displays a 10 or lower number
+    //        * The Timer counter doesn't display 00:00
+    
+    Scenario:
+        
+
 
     Scenario: New Game Button clicking
         When The user left-clicks on the New Game button
