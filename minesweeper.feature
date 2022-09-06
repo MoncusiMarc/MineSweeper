@@ -1,4 +1,4 @@
-Feature: MineSweeper
+Feature: MineSweeper Testing Features
 
     In Minesweeper, mines are scattered throughout a board, which is divided into cells.
     Cells have three states: unopened, opened and flagged.
@@ -11,6 +11,16 @@ Feature: MineSweeper
     Players can also flag a cell, visualised by a flag being put on the location, 
     to denote that they believe a mine to be in that place. 
     Flagged cells are still considered unopened, and a player can click on them to open them.
+
+    The Board:
+    "* * * * * * * *"
+    "* 8 * 7 6 5 4 2"
+    "* * * * * * 1 0"
+    "2 3 3 3 3 2 1 0"
+    "0 0 0 0 0 0 0 0"
+    "0 0 0 0 0 0 0 0"
+    "0 0 0 0 0 0 0 0"
+    "0 0 0 0 0 0 0 0"
 
     //Rule: The Game is 
         Background: Initial State
@@ -68,4 +78,4 @@ Feature: MineSweeper
     Scenario: Opening a numbered cell equal to 0
         When A "0" numbered cell opens
         Then The 8 adjacent cells open
-        * The cells become unclickable    
+        * The cells become unclickable
