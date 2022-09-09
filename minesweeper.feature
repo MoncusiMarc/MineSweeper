@@ -37,16 +37,14 @@ Feature: Minesweeper Testing Features
     "X" Represents a not mined cell flagged, shown when the game ends
 
     Testing board:
-        A B C D E F G H
-       ________________
-    1 | * * * * * * * *
-    2 | * 8 * 7 6 5 4 2
-    3 | * * * * * * 1 .
-    4 | 2 3 3 3 3 2 1 .
-    5 | . . . . . . . .
-    6 | . . . . . . . .
-    7 | . . . . . . . .
-    8 | . . . . . . . .
+        A B C D E F
+       ____________
+    1 | * * * 3 1 .
+    2 | * 8 * * 1 .
+    3 | * * * 5 2 .
+    4 | 4 6 * * 2 .
+    5 | * * 7 * 3 .
+    6 | 3 * * * 2 .
     
     '
 
@@ -55,52 +53,22 @@ Feature: Minesweeper Testing Features
         And The board is shown
         And The counter modifier is shown
 
-    Scenario Outline: Opening a cell
+    Scenario Outline: Opening a cell to show all symbols
         When The user left-clicks the cell: '<coordinates>'
         Then The cell '<coordinates>' should reveal: '<content>'
 
         Examples:
             | coordinates | content |
             |     A1      |    *    |
+            |     F1      |    .    |
+            |     E1      |    1    |
+            |     E3      |    2    |
+            |     D1      |    3    |
+            |     A4      |    4    |
+            |     D3      |    5    |
+            |     B4      |    6    |
+            |     C5      |    7    |
             |     B2      |    8    |
-            |     A5      |    .    |
-    
-    Scenario: Exploding a mine
-        When The user left-clicks the cell: 'A1'
-        Then The cell 'A1' should reveal: '*'
-        And The cell 'B1' should reveal: '*'
-        And The cell 'C1' should reveal: '*'
-        And The cell 'D1' should reveal: '*'
-        And The cell 'E1' should reveal: '*'
-        And The cell 'F1' should reveal: '*'
-        And The cell 'G1' should reveal: '*'
-        And The cell 'H1' should reveal: '*'
-        And The cell 'A3' should reveal: '*'
-        And The cell 'B3' should reveal: '*'
-        And The cell 'C3' should reveal: '*'
-        And The cell 'D3' should reveal: '*'
-        And The cell 'E3' should reveal: '*'
-        And The cell 'F3' should reveal: '*'
-    
-    Scenario: Exploding a mine with flags
-        Given The user right-clicks the cell: 'A1'
-        And The user right-clicks the cell: 'B2'
-        When The user left-clicks the cell: 'A2'
-        Then The cell 'A1' should reveal: 'F'
-        And The cell 'B1' should reveal: '*'
-        And The cell 'C1' should reveal: '*'
-        And The cell 'D1' should reveal: '*'
-        And The cell 'E1' should reveal: '*'
-        And The cell 'F1' should reveal: '*'
-        And The cell 'G1' should reveal: '*'
-        And The cell 'H1' should reveal: '*'
-        And The cell 'A3' should reveal: '*'
-        And The cell 'B3' should reveal: '*'
-        And The cell 'C3' should reveal: '*'
-        And The cell 'D3' should reveal: '*'
-        And The cell 'E3' should reveal: '*'
-        And The cell 'F3' should reveal: '*'
-        And The cell 'B2' should reveal: 'X'
 
     Scenario: Flag a cell
         When The user right-clicks the cell: 'A1'
@@ -112,3 +80,81 @@ Feature: Minesweeper Testing Features
         When The user right-clicks the cell 'A1'
         Then The cell 'A1' should reveal: 'F'
         And The mines counter modifies by "1"
+
+    Scenario: New Game
+        Given The user right-clicks the cell: 'A1'
+        When The user right-clicks the "New Game Button"
+        Then The Board should be reload /* What does it mean to reload the board?  */
+    
+    Scenario: Exploding a mine
+        When The user left-clicks the cell: 'A1'
+        Then The cell 'A1' should reveal: '*'
+        And The cell 'B1' should reveal: '*'
+        And The cell 'C1' should reveal: '*'
+        And The cell 'A2' should reveal: '*'
+        And The cell 'C2' should reveal: '*'
+        And The cell 'D2' should reveal: '*'
+        And The cell 'A3' should reveal: '*'
+        And The cell 'B3' should reveal: '*'
+        And The cell 'C3' should reveal: '*'
+        And The cell 'C4' should reveal: '*'
+        And The cell 'D4' should reveal: '*'
+        And The cell 'A5' should reveal: '*'
+        And The cell 'B5' should reveal: '*'
+        And The cell 'D5' should reveal: '*'
+        And The cell 'B6' should reveal: '*'
+        And The cell 'C6' should reveal: '*'
+        And The cell 'D6' should reveal: '*'
+
+    
+    Scenario: Exploding a mine with flags
+        Given The user right-clicks the cell: 'A1'
+        And The user right-clicks the cell: 'B2'
+        When The user left-clicks the cell: 'A2'
+        Then The cell 'A1' should reveal: 'F'
+        And The cell 'B1' should reveal: '*'
+        And The cell 'C1' should reveal: '*'
+        And The cell 'A2' should reveal: '*'
+        And The cell 'C2' should reveal: '*'
+        And The cell 'D2' should reveal: '*'
+        And The cell 'A3' should reveal: '*'
+        And The cell 'B3' should reveal: '*'
+        And The cell 'C3' should reveal: '*'
+        And The cell 'C4' should reveal: '*'
+        And The cell 'D4' should reveal: '*'
+        And The cell 'A5' should reveal: '*'
+        And The cell 'B5' should reveal: '*'
+        And The cell 'D5' should reveal: '*'
+        And The cell 'B6' should reveal: '*'
+        And The cell 'C6' should reveal: '*'
+        And The cell 'D6' should reveal: '*'
+        And The cell 'B2' should reveal: 'X'
+    
+    Scenario: Cascade of Zeroes
+        When The user left-clicks the cell: 'F1'
+        Then The cell 'F1' should reveal: '.'
+        And The cell 'E1' should reveal: '1'
+        And The cell 'F2' should reveal: '.'
+        And The cell 'E2' should reveal: '1'
+        And The cell 'F3' should reveal: '.'
+        And The cell 'E3' should reveal: '2'
+        And The cell 'F4' should reveal: '.'
+        And The cell 'E4' should reveal: '2'
+        And The cell 'F5' should reveal: '.'
+        And The cell 'E5' should reveal: '3'
+        And The cell 'F6' should reveal: '.'
+        And The cell 'E6' should reveal: '2'
+    
+    Scenario: Starting a Game, left-click
+        When The user left-clicks the cell: 'F1'
+        Then The timer counter should start counting
+    
+    Scenario: Starting a Game, right-click
+        When The user right-clicks the cell: 'F1'
+        Then The timer counter should start counting
+
+    Scenario: End Game State
+        When The user left-clicks the cell: 'A1'
+        Then The cell 'B2' should not reveal
+        And The timer counter should stop
+    
