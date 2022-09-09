@@ -48,12 +48,13 @@ Feature: Minesweeper Testing Features
     
     '
 
+
     Background: Initial State
         Given The Testing Webpage is initiated
-        And The board is shown
-        And The counter modifier is shown
 
-    Scenario Outline: Opening a cell to show all symbols
+    //Start easier, case by case, teach how to play it
+
+    Scenario Outline: Opening a cell to show all symbols    
         When The user left-clicks the cell: '<coordinates>'
         Then The cell '<coordinates>' should reveal: '<content>'
 
@@ -78,13 +79,9 @@ Feature: Minesweeper Testing Features
     Scenario: Unflag a cell
         Given The user right-clicks the cell: 'A1'
         When The user right-clicks the cell 'A1'
-        Then The cell 'A1' should reveal: 'F'
+        Then The cell 'A1' should reveal: ' '
         And The mines counter modifies by "1"
 
-    Scenario: New Game
-        Given The user right-clicks the cell: 'A1'
-        When The user right-clicks the "New Game Button"
-        Then The Board should be reload /* What does it mean to reload the board?  */
     
     Scenario: Exploding a mine
         When The user left-clicks the cell: 'A1'
@@ -112,6 +109,10 @@ Feature: Minesweeper Testing Features
         And The user right-clicks the cell: 'B2'
         When The user left-clicks the cell: 'A2'
         Then The cell 'A1' should reveal: 'F'
+        """
+        ****...
+        +
+        """
         And The cell 'B1' should reveal: '*'
         And The cell 'C1' should reveal: '*'
         And The cell 'A2' should reveal: '*'
