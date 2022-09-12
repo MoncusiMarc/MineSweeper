@@ -47,20 +47,18 @@ Feature: Minesweeper Testing Features
     6 | 3 * * * 2 .
     
     '
-
-
     Background: Initial State
         Given The Testing Webpage is initiated
+    
+    Scenario: Mines counter
+        Then The 'Mines counter' should show: '17' 
 
-    //Start easier, case by case, teach how to play it
-
-    Scenario Outline: Opening a cell to show all symbols    
-        When The user left-clicks the cell: '<coordinates>'
+    Scenario Outline: Opening a cell to reveal adjacent mines
+        When The user interacts with the cell: '<coordinates>'
         Then The cell '<coordinates>' should reveal: '<content>'
 
         Examples:
             | coordinates | content |
-            |     A1      |    *    |
             |     F1      |    .    |
             |     E1      |    1    |
             |     E3      |    2    |
@@ -70,6 +68,12 @@ Feature: Minesweeper Testing Features
             |     B4      |    6    |
             |     C5      |    7    |
             |     B2      |    8    |
+
+
+    Scenario: Opening a cell revealing a mine
+        When The user interacts with the cell: 'A1'
+        Then The cell 'A1' should reveal: '*'
+        And A text 
 
     Scenario: Flag a cell
         When The user right-clicks the cell: 'A1'
