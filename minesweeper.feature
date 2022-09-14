@@ -157,54 +157,15 @@ Feature: Minesweeper Testing Features
         When The user interacts with the cell: 'B2'
         Then The cell 'B2' should reveal: '8'
     
-    Scenario: Exploding a mine with flags
-        Given The user right-clicks the cell: 'A1'
-        And The user right-clicks the cell: 'B2'
-        When The user left-clicks the cell: 'A2'
-        Then The cell 'A1' should reveal: 'F'
-        And The cell 'B1' should reveal: '*'
-        And The cell 'C1' should reveal: '*'
-        And The cell 'A2' should reveal: '*'
-        And The cell 'C2' should reveal: '*'
-        And The cell 'D2' should reveal: '*'
-        And The cell 'A3' should reveal: '*'
-        And The cell 'B3' should reveal: '*'
-        And The cell 'C3' should reveal: '*'
-        And The cell 'C4' should reveal: '*'
-        And The cell 'D4' should reveal: '*'
-        And The cell 'A5' should reveal: '*'
-        And The cell 'B5' should reveal: '*'
-        And The cell 'D5' should reveal: '*'
-        And The cell 'B6' should reveal: '*'
-        And The cell 'C6' should reveal: '*'
-        And The cell 'D6' should reveal: '*'
-        And The cell 'B2' should reveal: 'X'
     
-    Scenario: Cascade of Zeroes
-        When The user left-clicks the cell: 'F1'
-        Then The cell 'F1' should reveal: '.'
-        And The cell 'E1' should reveal: '1'
-        And The cell 'F2' should reveal: '.'
-        And The cell 'E2' should reveal: '1'
-        And The cell 'F3' should reveal: '.'
-        And The cell 'E3' should reveal: '2'
-        And The cell 'F4' should reveal: '.'
-        And The cell 'E4' should reveal: '2'
-        And The cell 'F5' should reveal: '.'
-        And The cell 'E5' should reveal: '3'
-        And The cell 'F6' should reveal: '.'
-        And The cell 'E6' should reveal: '2'
+    Scenario: Pressing a zero opens the rest
+        When The user interacts with the cell: 'F1'
+        Then The game board should show
+            |   |   |   |   | 1 | . |
+            |   |   |   |   | 1 | . |
+            |   |   |   |   | 2 | . |
+            |   |   |   |   | 2 | . |
+            |   |   |   |   | 3 | . |
+            |   |   |   |   | 2 | . |
     
-    Scenario: Starting a Game, left-click
-        When The user left-clicks the cell: 'F1'
-        Then The timer counter should start counting
-    
-    Scenario: Starting a Game, right-click
-        When The user right-clicks the cell: 'F1'
-        Then The timer counter should start counting
-
-    Scenario: End Game State
-        When The user left-clicks the cell: 'A1'
-        Then The cell 'B2' should not reveal
-        And The timer counter should stop
     
