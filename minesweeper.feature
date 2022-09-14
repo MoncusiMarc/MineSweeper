@@ -37,14 +37,13 @@ Feature: Minesweeper Testing Features
     "X" Represents a not mined cell flagged, shown when the game ends
 
     Testing board:
-        A B C D E F
-       ____________
-    1 | * * * 3 1 .
-    2 | * 8 * * 1 .
-    3 | * * * 5 2 .
-    4 | 4 6 * * 2 .
-    5 | * * 7 * 3 .
-    6 | 3 * * * 2 .
+    | x | A | B | C | D | E | F |
+    | 1 | * | * | * | 3 | 1 | . |
+    | 2 | * | 8 | * | * | 1 | . |
+    | 3 | * | * | * | 5 | 2 | . |
+    | 4 | 4 | 6 | * | * | 2 | . |
+    | 5 | * | * | 7 | * | 3 | . |
+    | 6 | 3 | * | * | * | 2 | . |
     
     '
     Background: Initial State
@@ -73,50 +72,75 @@ Feature: Minesweeper Testing Features
     Scenario: Opening a cell revealing a mine
         When The user interacts with the cell: 'A1'
         Then The cell 'A1' should reveal: '*'
-        And A text 
-
-    Scenario: Flag a cell
-        When The user right-clicks the cell: 'A1'
-        Then The cell 'A1' should reveal: 'F'
-        And The mines counter modifies by "-1"
+        And The 'Game Over' message appears
     
-    Scenario: Unflag a cell
-        Given The user right-clicks the cell: 'A1'
-        When The user right-clicks the cell 'A1'
+    Scenario: Opening a cell and winning
+        Given The game board state appears as
+            |   |   |   |   | 1 | . |
+            |   | 8 |   |   | 1 | . |
+            |   |   |   | 5 | 2 | . |
+            | 4 | 6 |   |   | 2 | . |
+            |   |   | 7 |   | 3 | . |
+            | 3 |   |   |   | 2 | . |
+        When The user interacts with the cell: 'D1'
+        Then The cell 'D1' should reveal: '3'
+        And the 'Game Completed' message
+
+    Scenario: Exploding all mines
+        When The user interacts with the cell: 'A1'
+        Then The game board should show
+            | * | * | * |   |   |   |
+            | * |   | * | * |   |   |
+            | * | * | * |   |   |   |
+            |   |   | * | * |   |   |
+            | * | * |   | * |   |   |
+            |   | * | * | * |   |   |
+    
+    Scenario: Marking a cell with ! where the mine is expected to be
+        When The user marks the cell: 'A1'
+        Then The cell 'A1' should reveal: '!'
+        And The 'Mines counter' should show: '16' 
+    
+    Scenario: Marking a cell with !, negative numbers
+        Given The game board state appears as
+            | ! | ! | ! |   |   |   |
+            | ! | ! | ! |   |   |   |
+            | ! | ! | ! |   |   |   |
+            | ! | ! | ! |   |   |   |
+            | ! | ! | ! |   |   |   |
+            | ! | ! |   |   |   |   |
+        When The user marks the cell: 'C6'
+        Then The 'Mines counter' should show: '-1'
+    
+    Scenario: Marking a cell with ? when you are unsure of the cell
+        Given The game board state appears as
+            | ! |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+        When The user marks the cell: 'A1'
+        Then The cell 'A1' should reveal: '?'
+        And The 'Mines counter' should show: '17' 
+    
+    Scenario: Unmarking a cell
+        Given The game board state appears as
+            | ? |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+        When The user marks the cell: 'A1'
         Then The cell 'A1' should reveal: ' '
-        And The mines counter modifies by "1"
-
-    
-    Scenario: Exploding a mine
-        When The user left-clicks the cell: 'A1'
-        Then The cell 'A1' should reveal: '*'
-        And The cell 'B1' should reveal: '*'
-        And The cell 'C1' should reveal: '*'
-        And The cell 'A2' should reveal: '*'
-        And The cell 'C2' should reveal: '*'
-        And The cell 'D2' should reveal: '*'
-        And The cell 'A3' should reveal: '*'
-        And The cell 'B3' should reveal: '*'
-        And The cell 'C3' should reveal: '*'
-        And The cell 'C4' should reveal: '*'
-        And The cell 'D4' should reveal: '*'
-        And The cell 'A5' should reveal: '*'
-        And The cell 'B5' should reveal: '*'
-        And The cell 'D5' should reveal: '*'
-        And The cell 'B6' should reveal: '*'
-        And The cell 'C6' should reveal: '*'
-        And The cell 'D6' should reveal: '*'
-
+        
     
     Scenario: Exploding a mine with flags
         Given The user right-clicks the cell: 'A1'
         And The user right-clicks the cell: 'B2'
         When The user left-clicks the cell: 'A2'
         Then The cell 'A1' should reveal: 'F'
-        """
-        ****...
-        +
-        """
         And The cell 'B1' should reveal: '*'
         And The cell 'C1' should reveal: '*'
         And The cell 'A2' should reveal: '*'
