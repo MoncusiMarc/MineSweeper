@@ -134,7 +134,28 @@ Feature: Minesweeper Testing Features
             |   |   |   |   |   |   |
         When The user marks the cell: 'A1'
         Then The cell 'A1' should reveal: ' '
-        
+    
+    Scenario: Interacting with a '!' mark
+        Given The game board state appears as
+            |   |   |   |   |   |   |
+            |   | ! |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+        When The user interacts with the cell 'B2'
+        Then The cell 'B2' should reveal: '8'
+    
+    Scenario: Interacting wit a '?' mark
+        Given The game board state appears as
+            |   |   |   |   |   |   |
+            |   | ? |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+        When The user interacts with the cell: 'B2'
+        Then The cell 'B2' should reveal: '8'
     
     Scenario: Exploding a mine with flags
         Given The user right-clicks the cell: 'A1'
