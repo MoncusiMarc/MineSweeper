@@ -168,4 +168,3 @@ Feature: Minesweeper Testing Features
             |   |   |   |   | 3 | . |
             |   |   |   |   | 2 | . |
     
-    
