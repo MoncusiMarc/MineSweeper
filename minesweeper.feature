@@ -146,7 +146,7 @@ Feature: Minesweeper Testing Features
         When The user interacts with the cell 'B2'
         Then The cell 'B2' should reveal: '8'
     
-    Scenario: Interacting wit a '?' mark
+    Scenario: Interacting with a '?' mark
         Given The game board state appears as
             |   |   |   |   |   |   |
             |   | ? |   |   |   |   |
@@ -158,7 +158,7 @@ Feature: Minesweeper Testing Features
         Then The cell 'B2' should reveal: '8'
     
     
-    Scenario: Pressing a zero opens the rest
+    Scenario: Interacting with a zero opens the adjacent cells
         When The user interacts with the cell: 'F1'
         Then The game board should show
             |   |   |   |   | 1 | . |
