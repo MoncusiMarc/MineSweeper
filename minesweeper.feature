@@ -156,31 +156,15 @@ Feature: Minesweeper Testing Features
         And The 'Mines Counter' shows: '17'
     
     Scenario: Opening a flagged cell
-        Given The cell 'A1' is 
+        Given The cell 'B2' is flagged
+        When The user opens the cell: 'B2'
+        Then The cell 'B2' reveals: '8'
 
-    Scenario: Interacting with a '!' mark
-        Given The game board state appears as
-            |   |   |   |   |   |   |
-            |   | ! |   |   |   |   |
-            |   |   |   |   |   |   |
-            |   |   |   |   |   |   |
-            |   |   |   |   |   |   |
-            |   |   |   |   |   |   |
-        When The user interacts with the cell 'B2'
-        Then The cell 'B2' should reveal: '8'
-    
-    Scenario: Interacting with a '?' mark
-        Given The game board state appears as
-            |   |   |   |   |   |   |
-            |   | ? |   |   |   |   |
-            |   |   |   |   |   |   |
-            |   |   |   |   |   |   |
-            |   |   |   |   |   |   |
-            |   |   |   |   |   |   |
-        When The user interacts with the cell: 'B2'
-        Then The cell 'B2' should reveal: '8'
-    
-    
+    Scenario: Opening a marked cell
+        Given The cell 'B2' is marked
+        When The user opens the cell: 'B2'
+        Then The cell 'B2' reveals: '8'    
+
     Scenario: Interacting with a zero opens the adjacent cells, and the opened cells if are zero 
         When The user interacts with the cell: 'F1'
         Then The game board should show
