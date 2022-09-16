@@ -154,8 +154,10 @@ Feature: Minesweeper Testing Features
         When The user unmarks the cell: 'A1'
         Then The cell 'A1' reveals: ' '
         And The 'Mines Counter' shows: '17'
+    
+    Scenario: Opening a flagged cell
+        Given The cell 'A1' is 
 
-        
     Scenario: Interacting with a '!' mark
         Given The game board state appears as
             |   |   |   |   |   |   |
