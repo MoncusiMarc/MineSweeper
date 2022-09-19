@@ -93,7 +93,7 @@ Feature: Minesweeper Testing Features
     //F1 assume 0 bomb recursivity is already implemented
 
     Scenario: Opening a mine reveals all the other mines
-        When The user interacts with the cell: 'A1'
+        When The user opens the cell: 'A1'
         Then The game board should show
             | * | * | * |   |   |   |
             | * |   | * | * |   |   |
@@ -148,7 +148,7 @@ Feature: Minesweeper Testing Features
         Then The cell 'B2' reveals: '8'
     
     Scenario: Opening a mined cell with flagged cells on the board, those correctly flagged won't change, those incorrectly flagged will change to 'X'
-        Given The user flaggs the cell:
+        Given The user flaggs the cells:
         '''
         A1, B2, C3, D4, E5, F6
         '''
@@ -164,7 +164,7 @@ Feature: Minesweeper Testing Features
             And The 'Mines Counter' shows: '11'
         
     Scenario: Opening a mined cell with marked cells on the board, the mines will show, the numbered ones won't change
-        Given The user marks the cell:
+        Given The user marks the cells:
         '''
         A1, B2, C3, D4, E5, F6
         '''
@@ -179,7 +179,35 @@ Feature: Minesweeper Testing Features
             |   | * | * | * |   | ? |
         And The 'Mines Counter' shows: '17'
 
-    Scenario: Interacting with a zero opens the adjacent cells, and the opened cells if are zero 
+    Scenario: Opening a cell with the number '0' opens the adjacent cells, if another '0' cell is found open adjacents (recursivity)
+        When The user opens the cell: 'F1'
+        Then The game board should show
+            |   |   |   |   | 1 | . |
+            |   |   |   |   | 1 | . |
+            |   |   |   |   | 2 | . |
+            |   |   |   |   | 2 | . |
+            |   |   |   |   | 3 | . |
+            |   |   |   |   | 2 | . |
+
+    Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '!' cell is found cells that cell doesn't open
+        Given The user flags the cells:
+        '''
+        E3, F3
+        '''
+        When The user interacts with the cell: 'F1'
+        Then The game board should show
+            |   |   |   |   | 1 | . |
+            |   |   |   |   | 1 | . |
+            |   |   |   |   | ! | ! |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+            |   |   |   |   |   |   |
+
+    Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '?' cell is found it gets opened normally
+        Given The user flags the cells:
+        '''
+        E3, F3
+        '''
         When The user interacts with the cell: 'F1'
         Then The game board should show
             |   |   |   |   | 1 | . |
@@ -188,4 +216,3 @@ Feature: Minesweeper Testing Features
             |   |   |   |   | 2 | . |
             |   |   |   |   | 3 | . |
             |   |   |   |   | 2 | . |
-    
