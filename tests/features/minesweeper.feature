@@ -34,33 +34,6 @@ Feature: Minesweeper Testing Features
     Scenario: Default mines value; number of mines - number of flags
         Then The 'Mines Counter' shows: '17' 
 
-    Scenario: Revealing a cell with the mouse
-        When The user left-clicks with the mouse the cell: 'A1'
-        Then The cell 'A1' opens
-
-    //can we right click from a cell's state?
-    Scenario: Flagging a cell with the mouse, '!'
-        When The user right-clicks with the mouse the cell: 'A1'
-        Then The cell 'A1' is flagged
-
-    Scenario: UnFlagging a cell with the mouse, '!'
-        Given The user right-clicks with the mouse the cell: 'A1'
-        And The user right-clicks with the mouse the cell: 'A1'
-        When The user right-clicks with the mouse the cell: 'A1'
-        Then The cell 'A1' is unflagged
-
-    Scenario: Marking a cell with the mouse, '?'
-        Given The user right-clicks with the mouse the cell: 'A1'
-        When The user right-clicks with the mouse the cell: 'A1'
-        Then The cell 'A1' is marked
-
-    Scenario: Unmarking a cell with the mouse, '?'
-        Given The user right-clicks with the mouse the cell: 'A1'
-        And The user right-clicks with the mouse the cell: 'A1'
-        And The user right-clicks with the mouse the cell: 'A1'
-        When The user right-clicks with the mouse the cell: 'A1'
-        Then The cell 'A1' is unmarked
-
     Scenario: Opening a mined cell and ending the game
         When the user opens the cell 'A1'
         Then the cell 'A1' reveals: '*'
@@ -81,16 +54,6 @@ Feature: Minesweeper Testing Features
             |     B4      |    6    |
             |     C5      |    7    |
             |     B2      |    8    |
-
-    Scenario: Opening the last not mined cell and winning the game
-        Given The user opens the cells:
-        '''
-        F1 , B2 , D3 , A4 , B4 , C5 , A6
-        '''
-        When the user opens the cell: 'D1'
-        Then the cell 'D1' reveals: '3'
-        And the Game is won
-    //F1 assume 0 bomb recursivity is already implemented
 
     Scenario: Opening a mine reveals all the other mines
         When The user opens the cell: 'A1'
@@ -188,6 +151,15 @@ Feature: Minesweeper Testing Features
             |   |   |   |   | 2 | . |
             |   |   |   |   | 3 | . |
             |   |   |   |   | 2 | . |
+
+    Scenario: Opening the last not mined cell and winning the game
+        Given The user opens the cells:
+        '''
+        F1 , B2 , D3 , A4 , B4 , C5 , A6
+        '''
+        When the user opens the cell: 'D1'
+        Then the cell 'D1' reveals: '3'
+        And the Game is won
 
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '!' cell is found cells that cell doesn't open
         Given The user flags the cells:
