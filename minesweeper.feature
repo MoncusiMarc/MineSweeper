@@ -1,26 +1,6 @@
 Feature: Minesweeper Testing Features
 
-    'In Minesweeper, mines are scattered throughout a board, which is divided into cells.
-    Cells have 2 categories: Their State and their Content
-    
-    The State of a cell can be divided in opened, hidden and flagged.
-    
-    Hidden cells are blank and clickable and can be flagged or not.
-    
-    Opened cells are exposed and reveal the content of that cell.
-    
-    Flagged cells are those marked by the player to indicate a potential mine location.
-    Flagged cells are still considered hidden, and a player can click on them to open them.
-    Players can flag a hidden cell by right clicking the cell.
-    Players can unflag a hidden cell by right clicking the flagged cell.
-
-    The Content of the cell can be a mine or a number.
-    If a player opens a mined cell, the game ends.
-    Mines are represented by : "*"
-
-    Otherwise, the opened cell displays a number, indicating the number of mines diagonally and orthogonally adjacent to it.
-    When the number of mines adjacent is  "0" it is represented by a blank tile ("."), and all adjacent cells will automatically open.
-
+    '
     Simbology:
     " " Represents a hidden cell
     "*" Represents a mine
@@ -46,13 +26,6 @@ Feature: Minesweeper Testing Features
     | 5 | * | * | 7 | * | 3 | . |
     | 6 | 3 | * | * | * | 2 | . |
     
-    '
-    '
-    Better scenario names
-    Use array in given instead of tables
-    Marking things better stablished
-    Scenarios about mouse buttons
-    Use opens when opening a cell, use show when the content is opened
     '
 
     Background:
@@ -136,8 +109,8 @@ Feature: Minesweeper Testing Features
         And The 'Mines Counter' shows: '16'
     
     Scenario: Unflagging a cell to the normal state of the cell
-        Given The 'Mines Counter' shows: '16'
-        And The cell 'A1' is flagged
+        Given The cell 'A1' is flagged
+        And The 'Mines Counter' shows: '16'
         When The user unflags the cell: 'A1'
         Then The cell 'A1' reveals: ' '
         And The 'Mines Counter' shows: '17'
@@ -149,21 +122,62 @@ Feature: Minesweeper Testing Features
         And The 'Mines counter' shows: '17' 
     
     Scenario: Unmarking a cell
-        Given The 'Mines Counter' shows: '17'
-        And The cell 'A1' us marked
+        Given The cell 'A1' us marked
+        And The 'Mines Counter' shows: '17'
         When The user unmarks the cell: 'A1'
         Then The cell 'A1' reveals: ' '
         And The 'Mines Counter' shows: '17'
     
-    Scenario: Opening a flagged cell
+    Scenario: Opening a flagged cell hiding a number
         Given The cell 'B2' is flagged
+        And The 'Mines Counter' shows:'16'
         When The user opens the cell: 'B2'
         Then The cell 'B2' reveals: '8'
+        And The 'Mines Counter' shows: '17'
+
+    Scenario: Opening a flagged cell hiding a mine
+        Given The cell 'A1' is flagged
+        And The 'Mines Counter' shows: '16'
+        When The user opens the cell 'A1'
+        Then The cell 'B2' reveals: '*'
+        And The 'Mines Counter' shows: '16'
 
     Scenario: Opening a marked cell
         Given The cell 'B2' is marked
         When The user opens the cell: 'B2'
-        Then The cell 'B2' reveals: '8'    
+        Then The cell 'B2' reveals: '8'
+    
+    Scenario: Opening a mined cell with flagged cells on the board, those correctly flagged won't change, those incorrectly flagged will change to 'X'
+        Given The user flaggs the cell:
+        '''
+        A1, B2, C3, D4, E5, F6
+        '''
+        And The 'Mines Counter' shows: '11'
+        When The user opens the cell 'A1'
+        Then The game board should show
+            | * | * | * |   |   |   |
+            | * | X | * | * |   |   |
+            | * | * | ! |   |   |   |
+            |   |   | * | ! |   |   |
+            | * | * |   | * | X |   |
+            |   | * | * | * |   | X |
+            And The 'Mines Counter' shows: '11'
+        
+    Scenario: Opening a mined cell with marked cells on the board, the mines will show, the numbered ones won't change
+        Given The user marks the cell:
+        '''
+        A1, B2, C3, D4, E5, F6
+        '''
+        And The 'Mines Counter' shows: '17'
+        When The user opens the cell 'A1'
+        Then The game board should show
+            | * | * | * |   |   |   |
+            | * | ? | * | * |   |   |
+            | * | * | * |   |   |   |
+            |   |   | * | * |   |   |
+            | * | * |   | * | ? |   |
+            |   | * | * | * |   | ? |
+        And The 'Mines Counter' shows: '17'
 
     Scenario: Interacting with a zero opens the adjacent cells, and the opened cells if are zero 
         When The user interacts with the cell: 'F1'
