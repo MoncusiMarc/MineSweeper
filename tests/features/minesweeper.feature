@@ -112,9 +112,9 @@ Feature: Minesweeper Testing Features
     
     Scenario: Opening a mined cell with flagged cells on the board, those correctly flagged won't change, those incorrectly flagged will change to 'X'
         Given The user flaggs the cells:
-        '''
+        """
         A1, B2, C3, D4, E5, F6
-        '''
+        """
         And The 'Mines Counter' shows: '11'
         When The user opens the cell 'A1'
         Then The game board should show
@@ -128,9 +128,9 @@ Feature: Minesweeper Testing Features
         
     Scenario: Opening a mined cell with marked cells on the board, the mines will show, the numbered ones won't change
         Given The user marks the cells:
-        '''
+        """
         A1, B2, C3, D4, E5, F6
-        '''
+        """
         And The 'Mines Counter' shows: '17'
         When The user opens the cell 'A1'
         Then The game board should show
@@ -154,18 +154,18 @@ Feature: Minesweeper Testing Features
 
     Scenario: Opening the last not mined cell and winning the game
         Given The user opens the cells:
-        '''
+        """
         F1 , B2 , D3 , A4 , B4 , C5 , A6
-        '''
+        """
         When the user opens the cell: 'D1'
         Then the cell 'D1' reveals: '3'
         And the Game is won
 
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '!' cell is found cells that cell doesn't open
         Given The user flags the cells:
-        '''
+        """
         E3, F3
-        '''
+        """
         When The user interacts with the cell: 'F1'
         Then The game board should show
             |   |   |   |   | 1 | . |
@@ -177,9 +177,9 @@ Feature: Minesweeper Testing Features
 
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '?' cell is found it gets opened normally
         Given The user flags the cells:
-        '''
+        """
         E3, F3
-        '''
+        """
         When The user interacts with the cell: 'F1'
         Then The game board should show
             |   |   |   |   | 1 | . |
