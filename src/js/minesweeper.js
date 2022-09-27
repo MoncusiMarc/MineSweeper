@@ -20,6 +20,11 @@ class minesweeper {
         return [[cols,rows,mines],board];
     }
 
+    setMines(){
+        var mc = document.getElementById('minesCounter');
+        mc.innerText = this.mines;
+    }
+
     displayMap(){
         this.board.forEach(element => {
             console.log(element);

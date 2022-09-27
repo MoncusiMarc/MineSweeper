@@ -7,6 +7,7 @@ const ms = new minesweeper();
 
 window.onload = function () {
     generateBoard();
+    ms.setMines();
 }
 
 function generateBoard(){
@@ -16,5 +17,6 @@ function generateBoard(){
       let cell = document.createElement("div")
       cell.innerText = (c)
       container.appendChild(cell).className = "grid-item"
+    for(i=0; i< ms.rows;i++)
     };
 }
