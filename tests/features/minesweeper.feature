@@ -31,9 +31,11 @@ Feature: Minesweeper Testing Features
     Background:
         Given The Testing Webpage is initiated
 
+@done
     Scenario: Default mines value; number of mines - number of flags
         Then The 'Mines Counter' shows: '17' 
 
+@current
     Scenario: Opening a mined cell and ending the game
         When the user opens the cell 'A1'
         Then the cell 'A1' reveals: '*'

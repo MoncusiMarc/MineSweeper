@@ -10,6 +10,6 @@ Given('The Testing Webpage is initiated',async () => {
 });
 
 Then('The {string} shows: {string}', async (string, string2) =>{
-    const display = await page.locator('data-testId='+string).innerText();
+    const display = await page.locator('data-testid='+string).innerText();
     expect(display).toBe(string2);
   });
