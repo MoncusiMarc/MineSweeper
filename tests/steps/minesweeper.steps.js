@@ -13,3 +13,18 @@ Then('The {string} shows: {string}', async (string, string2) =>{
     const display = await page.locator('data-testid='+string).innerText();
     expect(display).toBe(string2);
   });
+
+  When('the user opens the cell {string}', function (string) {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+  });
+
+  Then('the cell {string} reveals: {string}', function (string, string2) {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+  });
+
+  Then('The game is over', function () {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+  });
