@@ -1,4 +1,4 @@
-var defaultCell = {
+const defaultCell = {
     opened: false,
     marked: false,
     flagged: false,
@@ -11,6 +11,19 @@ class minesweeper {
         this.rows = map[0][0]
         this.cols = map[0][1]
         this.mines = map[0][2]
+        this.gameState = 'notFinished'
+    }
+    getMines(){
+        return this.mines
+    }
+    getBoard(){
+        return this.board
+    }
+    getCell(row,col){
+        return this.board[row][col]
+    }
+    getGameState(){
+        return this.gameState
     }
 
     mapCreate(rows=8,cols=8,mines=10){
@@ -32,16 +45,12 @@ class minesweeper {
         return [[cols,rows,mines],board]
     }
 
-    setMinesCounter(){
-        var mc = document.getElementById('minesCounter')
-        mc.innerText = this.mines
-    }
-
     openCell(row,col){
         this.board[row][col].opened = true
         switch(this.board[row][col].content){
             case '*':
-                //TODO: gameover()
+                this.gameState = 'lost'
+                this.openAllMines();
                 break
             case '.':
                 this.board[row][col].content = this.countAdjCells(row,col)
@@ -51,6 +60,7 @@ class minesweeper {
                 break
         }
     }
+
     openAdjacentCells(row,col){
         for(let i = row-1; i<=row+1; i++){
             for (let j = col-1; j <=col+1; j++) {
@@ -61,6 +71,18 @@ class minesweeper {
                 if(!this.board[row][col].opened){
                     continue}
                 this.openCell(i,j);
+            }
+        }
+    }
+
+    openAllMines(){
+        for(let i = 0; i < this.rows; i++){
+            for (let j = 0; j < this.cols; j++) {
+                if(this.board[i][j].opened){
+                    continue}
+                if(this.board[i][j].content == '*'){
+                    this.board[i][j].opened = true
+                }
             }
         }
     }
@@ -77,10 +99,5 @@ class minesweeper {
             }
         }
         return value;
-    }
-
-    
-    displayMap(){
-        
     }
 }
