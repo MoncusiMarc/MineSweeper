@@ -1,7 +1,6 @@
 const defaultCell = {
     opened: false,
-    marked: false,
-    flagged: false,
+    state: 'none',
     content: '.'
 }
 
@@ -45,6 +44,12 @@ class minesweeper {
         return [[cols,rows,mines],board]
     }
 
+    flagCell(row,col){this.board[row][col].state = 'flagged'}
+
+    markCell(row,col){this.board[row][col].state = 'marked'}
+
+    noStateCell(row,col){this.board[row][col].state = 'none'}
+
     openCell(row,col){
         this.board[row][col].opened = true
         switch(this.board[row][col].content){
@@ -75,18 +80,6 @@ class minesweeper {
         }
     }
 
-    openAllMines(){
-        for(let i = 0; i < this.rows; i++){
-            for (let j = 0; j < this.cols; j++) {
-                if(this.board[i][j].opened){
-                    continue}
-                if(this.board[i][j].content == '*'){
-                    this.board[i][j].opened = true
-                }
-            }
-        }
-    }
-
     countAdjCells(row,col){
         let value=0;
         for(let i = row-1; i<=row+1; i++){
@@ -99,5 +92,17 @@ class minesweeper {
             }
         }
         return value;
+    }
+
+    openAllMines(){
+        for(let i = 0; i < this.rows; i++){
+            for (let j = 0; j < this.cols; j++) {
+                if(this.board[i][j].opened){
+                    continue}
+                if(this.board[i][j].content == '*'){
+                    this.board[i][j].opened = true
+                }
+            }
+        }
     }
 }

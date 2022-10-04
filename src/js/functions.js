@@ -21,7 +21,7 @@ function generateBoard(){
       let cellVal = i+'-'+j
       container.appendChild(cell).className = "grid-item"
       cell.setAttribute('id',cellVal)
-      cell.setAttribute('data-testId',cellVal)
+      cell.setAttribute('data-testid',cellVal)
       cellListener(cell,i,j);
     }
   }
@@ -31,10 +31,21 @@ function updateBoard(){
   for(let i = 1; i <= ms.rows; i++){
     for(let j = 1; j <= ms.cols; j++){
       let boardCell = ms.getCell(i-1,j-1)
-      if(boardCell.opened == true){
-        let cellVal = i+'-'+j
-        let cell = document.getElementById(cellVal)
-        cell.innerText = boardCell.content
+      let cellVal = i+'-'+j
+      let cell = document.getElementById(cellVal)
+
+      switch(boardCell.state){
+        case 'flagged':
+          cell.innerText = '!'
+          break
+        case 'marked':
+          cell.innerText = '?'
+          break
+        case 'none':
+          if(boardCell.opened == true){
+          cell.innerText = boardCell.content
+          }else{cell.innerText = ''}
+          break
       }
     }
   }
@@ -58,24 +69,35 @@ function setMinesCounter(){
   mc.innerText = ms.getMines();
 }
 
+function nextCellState(cell,row,col){
+  switch(cell.innerText){
+    case '!':
+      ms.markCell(row-1,col-1)
+      break;
+    case '':
+      ms.flagCell(row-1,col-1)
+      break;
+    case '?':
+      ms.noStateCell(row-1,col-1)
+      break;
+    default:
+      break;
+  }
+}
 function cellListener(cell, row, col){
   cell.addEventListener('click',function(event){
     console.log('click')
-    if(cell.textContent.trim() != ''){
-      return;
-    }
-    else{
-      switch(event.which){
+    switch(event.which){
         case 1:
-          ms.openCell(row-1,col-1);
-          break;
-        case 3:
-          break;
+          ms.openCell(row-1,col-1)
+          break
+        case 2:
+          nextCellState(cell,row,col)
+          break
         default:
-          break;
-      }
+          break
     }
-    updateBoard();
-    checkState();
+    updateBoard()
+    checkState()
   });
 }

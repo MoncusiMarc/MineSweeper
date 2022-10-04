@@ -36,19 +36,20 @@ Feature: Minesweeper Testing Features
     Scenario: Default mines value; number of mines - number of flags
         Then The 'Mines Counter' shows: '17' 
 
-@current
+@done
     Scenario: Opening a mined cell and ending the game
-        When the user opens the cell '1-1'
-        Then the cell '1-1' reveals: '*'
+        When The user opens the cell: '1-1'
+        Then The cell '1-1' reveals: '*'
         And The game is over
 
+@done
     Scenario Outline: Opening a numbered cell, and showing the number corresponding to the adjacent mines
         When The user opens the cell: '<coordinates>'
         Then The cell '<coordinates>' reveals: '<content>'
 
         Examples:
             | coordinates | content |
-            |     1-6     |    .    |
+            |     1-6     |    0    |
             |     1-5     |    1    |
             |     3-5     |    2    |
             |     1-4     |    3    |
@@ -58,6 +59,7 @@ Feature: Minesweeper Testing Features
             |     5-3     |    7    |
             |     2-2     |    8    |
 
+@done
     Scenario: Opening a mine reveals all the other mines
         When The user opens the cell: '1-1'
         Then The game board should show
@@ -68,6 +70,7 @@ Feature: Minesweeper Testing Features
             | * | * |   | * |   |   |
             |   | * | * | * |   |   |
 
+@current
     Scenario: Flagging a cell when the user is certain there is a mine
         Given The 'Mines Counter' shows: '17'
         When The user flags the cell: '1-1'
