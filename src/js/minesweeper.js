@@ -80,6 +80,7 @@ class minesweeper {
             case '*':
                 this.gameState = 'lost'
                 this.openAllMines()
+                this.board[row][col].state = 'none'
                 break
             case '.':
                 this.board[row][col].content = this.countAdjCells(row,col)

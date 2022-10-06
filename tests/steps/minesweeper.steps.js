@@ -4,74 +4,70 @@ const { expect } = require('@playwright/test');
 const testingUrl = 'http://127.0.0.1:5500/src/html/testing.html';
 
 
-async function clickCell(cell){
-    await page.click(`[data-testId="${cell}"]`, { force: true });
-}
-async function flagCell(cell){
-    while( await page.locator('data-testid='+cell).innerText() != '!'){
-      await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
-}
-async function markCell(cell){
-  while( await page.locator('data-testid='+cell).innerText() != '?'){
-    await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
-}
-async function unflagCell(cell){
-  while( await page.locator('data-testid='+cell).innerText() != ''){
-  await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
-}
-async function unmarkCell(cell){
-while( await page.locator('data-testid='+cell).innerText() != ''){
-  await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
+async function interactCell(interaction,cell){
+  switch(interaction){
+    case 'opens':
+      await page.click(`[data-testId="${cell}"]`, { force: true });
+      break;
+    case 'flags':
+    case 'flagged':
+      while( await page.locator('data-testid='+cell).innerText() != '!'){
+        await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
+      break
+    case 'marks':
+    case 'marked':
+      while( await page.locator('data-testid='+cell).innerText() != '?'){
+        await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
+      break
+      case 'unflags':
+    case 'unmarks':
+      while( await page.locator('data-testid='+cell).innerText() != ''){
+        await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
+      break
+    default:
+      return 'pending'
+  }
 }
 
-async function CheckTable(twoDTable){ //TODO: check for ! when they appear
+async function CheckTable(twoDTable){
   for(let i=1;i<=twoDTable.length;i++){
     for(let j=1;j<=twoDTable[0].length;j++){
-      var cell = await page.locator('data-testid='+i+'-'+j).innerText();
+      var cell = await page.locator('data-testid='+i+'-'+j).innerText()
       if(twoDTable[i-1][j-1] == '*' && cell != '*'){return 'failed'}
     }
   }
   return 'passed'
 }
 
+async function SplitDocString(interaction,docString){
+  const CellArray = docString.split(",")
+  CellArray.forEach(cell => {
+    interactCell(interaction,cell)
+  });
+}
+
 
 
 Given('The Testing Webpage is initiated',async () => {
-    await page.goto(testingUrl);
+  await page.goto(testingUrl);
 });
 
-Given('The cell {string} is flagged', async (string) =>{
-    await flagCell(string)
+Given('The cell {string} is {string}', async (string, string2) => {
+  await interactCell(string2,string)
 });
 
-Given('The cell {string} is marked', async (string) =>{
-  await markCell(string)
+Given('The user {string} the cells:', async (string,docString) => {
+  await SplitDocString(string,docString)
 });
 
 Then('The {string} shows: {string}', async (string, string2) =>{
-    const display = await page.locator('data-testid='+string).innerText();
-    expect(display).toBe(string2);
+  const display = await page.locator('data-testid='+string).innerText();
+  expect(display).toBe(string2);
+});
+
+When('The user {string} the cell: {string}', async (string, string2) => {
+    await interactCell(string,string2)
   });
-
-When('The user opens the cell: {string}', async (string) => {
-  await clickCell(string);
-});
-
-When('The user flags the cell: {string}', async (string) =>{
-  await flagCell(string);
-});
-
-When('The user unflags the cell: {string}', async (string) =>{
-  await unflagCell(string);
-});
-
-When('The user marks the cell: {string}', async (string) =>{
-  await markCell(string);
-});
-
-When('The user unmarks the cell: {string}', async (string) =>{
-  await unmarkCell(string);
-});
 
 Then('The cell {string} reveals: {string}', async (string, string2) =>{
   const cell = await page.locator('data-testid='+string).innerText();

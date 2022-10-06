@@ -27,41 +27,37 @@ function generateBoard(){
 }
 
 function updateGame(){
-  switch(ms.getGameState()){
-    case 'lost':
-      gameState.innerText = 'Game Lost'
-
-      break;
-    case 'won':
-      gameState.innerText = 'Game Won'
-      break;
-    default:
-      updateMinesCounter()
-      updateBoard()
-      break;
-  }
-    
-
+  updateState()
+  updateMinesCounter()
+  updateBoard()
 }
 
 function updateBoard(){
+  console.log('hi')
   for(let i = 1; i <= ms.rows; i++){
     for(let j = 1; j <= ms.cols; j++){
       let boardCell = ms.getCell(i-1,j-1)
       let cellVal = i+'-'+j
       let cell = document.getElementById(cellVal)
-      switch(boardCell.state){
-        case 'flagged':
+      if(!boardCell.opened){
+        switch(boardCell.state){
+          case 'flagged':
+            if(boardCell.content != '*' && ms.getGameState() == 'lost') cell.innerText = 'X'
+            else cell.innerText = '!'
+            break
+          case 'marked':
+            cell.innerText = '?'
+            break
+          case 'none':
+            cell.innerText = ''
+            break
+        }
+      }else{
+        console.log('hi2')
+        if(boardCell.content == '*' && boardCell.state == 'flagged'){
           cell.innerText = '!'
-          break
-        case 'marked':
-          cell.innerText = '?'
-          break
-        case 'none':
-          if(boardCell.opened == true){
-          cell.innerText = boardCell.content
-          }else{cell.innerText = ''}
-          break
+        }
+        else cell.innerText = boardCell.content
       }
     }
   }
@@ -69,17 +65,6 @@ function updateBoard(){
 function updateMinesCounter(){
   var mc = document.getElementById('minesCounter')
   mc.innerText = ms.getMines();
-}
-
-function lostBoard(){
-  for(let i = 1; i <= ms.rows; i++){
-    for(let j = 1; j <= ms.cols; j++){
-      let boardCell = ms.getCell(i-1,j-1)
-      let cellVal = i+'-'+j
-      let cell = document.getElementById(cellVal)
-      
-    }
-  }
 }
 
 function nextCellState(cell,row,col){
@@ -95,6 +80,19 @@ function nextCellState(cell,row,col){
       break;
   }
 }
+function updateState(){
+  switch(ms.getGameState()){
+    case 'lost':
+      gameState.innerText = 'Game Lost';
+      break;
+    case 'won':
+      gameState.innerText = 'Game Won';
+      break;
+    default:
+      break;
+  }
+}
+
 function cellListener(cell, row, col){
   cell.addEventListener('contextmenu', e=> e.preventDefault())
   cell.addEventListener('mousedown',function(event){

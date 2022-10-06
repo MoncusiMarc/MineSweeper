@@ -38,13 +38,13 @@ Feature: Minesweeper Testing Features
 
 @done
     Scenario: Opening a mined cell and ending the game
-        When The user opens the cell: '1-1'
+        When The user 'opens' the cell: '1-1'
         Then The cell '1-1' reveals: '*'
         And The game is over
 
 @done
     Scenario Outline: Opening a numbered cell, and showing the number corresponding to the adjacent mines
-        When The user opens the cell: '<coordinates>'
+        When The user 'opens' the cell: '<coordinates>'
         Then The cell '<coordinates>' reveals: '<content>'
 
         Examples:
@@ -61,7 +61,7 @@ Feature: Minesweeper Testing Features
 
 @done
     Scenario: Opening a mine reveals all the other mines
-        When The user opens the cell: '1-1'
+        When The user 'opens' the cell: '1-1'
         Then The game board should show
             | * | * | * |   |   |   |
             | * |   | * | * |   |   |
@@ -73,63 +73,63 @@ Feature: Minesweeper Testing Features
 @done
     Scenario: Flagging a cell when the user is certain there is a mine
         Given The 'Mines Counter' shows: '17'
-        When The user flags the cell: '1-1'
+        When The user 'flags' the cell: '1-1'
         Then The cell '1-1' reveals: '!'
         And The 'Mines Counter' shows: '16'
 
 @done
     Scenario: Unflagging a cell to the normal state of the cell
-        Given The cell '1-1' is flagged
+        Given The cell '1-1' is 'flagged'
         And The 'Mines Counter' shows: '16'
-        When The user unflags the cell: '1-1'
+        When The user 'unflags' the cell: '1-1'
         Then The cell '1-1' reveals: ''
         And The 'Mines Counter' shows: '17'
 
 @done
     Scenario: Marking a cell when the user is unsure of the cell's content
         Given The 'Mines Counter' shows: '17'
-        When The user marks the cell: '1-1'
+        When The user 'marks' the cell: '1-1'
         Then The cell '1-1' reveals: '?'
         And The 'Mines Counter' shows: '17'
 
 @done
     Scenario: Unmarking a cell
-        Given The cell '1-1' is marked
+        Given The cell '1-1' is 'marked'
         And The 'Mines Counter' shows: '17'
-        When The user unmarks the cell: '1-1'
+        When The user 'unmarks' the cell: '1-1'
         Then The cell '1-1' reveals: ''
         And The 'Mines Counter' shows: '17'
 
 @done
     Scenario: Opening a flagged cell hiding a number
-        Given The cell '2-2' is flagged
+        Given The cell '2-2' is 'flagged'
         And The 'Mines Counter' shows: '16'
-        When The user opens the cell: '2-2'
+        When The user 'opens' the cell: '2-2'
         Then The cell '2-2' reveals: '8'
         And The 'Mines Counter' shows: '17'
 
-@current
+@done
     Scenario: Opening a flagged cell hiding a mine
-        Given The cell '1-1' is flagged
+        Given The cell '1-1' is 'flagged'
         And The 'Mines Counter' shows: '16'
-        When The user opens the cell: '1-1'
+        When The user 'opens' the cell: '1-1'
         Then The cell '1-1' reveals: '*'
         And The 'Mines Counter' shows: '16'
 
 @done
     Scenario: Opening a marked cell
-        Given The cell '2-2' is marked
-        When The user opens the cell: '2-2'
+        Given The cell '2-2' is 'marked'
+        When The user 'opens' the cell: '2-2'
         Then The cell '2-2' reveals: '8'
 
-
+@current
     Scenario: Opening a mined cell with flagged cells on the board, those correctly flagged won't change, those incorrectly flagged will change to 'X'
-        Given The user flaggs the cells:
+        Given The user 'flags' the cells:
         """
         1-1,2-2,3-3,4-4,5-5,6-6
         """
         And The 'Mines Counter' shows: '11'
-        When The user opens the cell '1-1'
+        When The user 'opens' the cell: '1-1'
         Then The game board should show
             | * | * | * |   |   |   |
             | * | X | * | * |   |   |
@@ -139,13 +139,14 @@ Feature: Minesweeper Testing Features
             |   | * | * | * |   | X |
             And The 'Mines Counter' shows: '11'
 
+
     Scenario: Opening a mined cell with marked cells on the board, the mines will show, the numbered ones won't change
-        Given The user marks the cells:
+        Given The user 'marks' the cells:
         """
         1-1,2-2,3-3,4-4,5-5,6-6
         """
         And The 'Mines Counter' shows: '17'
-        When The user opens the cell '1-1'
+        When The user 'opens' the cell: '1-1'
         Then The game board should show
             | * | * | * |   |   |   |
             | * | ? | * | * |   |   |
@@ -156,7 +157,7 @@ Feature: Minesweeper Testing Features
         And The 'Mines Counter' shows: '17'
 
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if another '0' cell is found open adjacents (recursivity)
-        When The user opens the cell: '1-6'
+        When The user 'opens' the cell: '1-6'
         Then The game board should show
             |   |   |   |   | 1 | . |
             |   |   |   |   | 1 | . |
@@ -166,20 +167,20 @@ Feature: Minesweeper Testing Features
             |   |   |   |   | 2 | . |
 
     Scenario: Opening the last not mined cell and winning the game
-        Given The user opens the cells:
+        Given The user 'opens' the cells:
         """
         1-6,2-2,3-4,4-1,4-2,5-3,6-1
         """
-        When the user opens the cell: '1-4'
+        When the user 'opens' the cell: '1-4'
         Then the cell '1-4' reveals: '3'
         And the Game is won
 
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '!' cell is found cells that cell doesn't open
-        Given The user flags the cells:
+        Given The user 'flags' the cells:
         """
         3-5,3-6
         """
-        When The user interacts with the cell: '1-6'
+        When The user 'opens' with the cell: '1-6'
         Then The game board should show
             |   |   |   |   | 1 | . |
             |   |   |   |   | 1 | . |
@@ -189,11 +190,11 @@ Feature: Minesweeper Testing Features
             |   |   |   |   |   |   |
 
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '?' cell is found it gets opened normally
-        Given The user marks the cells:
+        Given The user 'marks' the cells:
         """
         3-5,3-6
         """
-        When The user interacts with the cell: '1-6'
+        When The user 'opens' with the cell: '1-6'
         Then The game board should show
             |   |   |   |   | 1 | . |
             |   |   |   |   | 1 | . |
