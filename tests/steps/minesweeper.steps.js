@@ -8,20 +8,20 @@ async function clickCell(cell){
     await page.click(`[data-testId="${cell}"]`, { force: true });
 }
 async function flagCell(cell){
-    while(page.locator('data-testid='+cell).innerText() != '!'){
-    await page.click(`[data-testId="${cell}"]`, { button: "right" }, { force: true });}
+    while( await page.locator('data-testid='+cell).innerText() != '!'){
+      await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
 }
 async function markCell(cell){
-  while(page.locator('data-testid='+cell).innerText() != '?'){
-    await page.click(`[data-testId="${cell}"]`, { button: "right" }, { force: true });}
+  while( await page.locator('data-testid='+cell).innerText() != '?'){
+    await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
 }
 async function unflagCell(cell){
-  while(page.locator('data-testid='+cell).innerText() != ''){
-  await page.click(`[data-testId="${cell}"]`, { button: "right" }, { force: true });}
+  while( await page.locator('data-testid='+cell).innerText() != ''){
+  await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
 }
 async function unmarkCell(cell){
-while(page.locator('data-testid='+cell).innerText() != ''){
-  await page.click(`[data-testId="${cell}"]`, { button: "right" }, { force: true });}
+while( await page.locator('data-testid='+cell).innerText() != ''){
+  await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
 }
 
 async function CheckTable(twoDTable){ //TODO: check for ! when they appear
@@ -40,6 +40,14 @@ Given('The Testing Webpage is initiated',async () => {
     await page.goto(testingUrl);
 });
 
+Given('The cell {string} is flagged', async (string) =>{
+    await flagCell(string)
+});
+
+Given('The cell {string} is marked', async (string) =>{
+  await markCell(string)
+});
+
 Then('The {string} shows: {string}', async (string, string2) =>{
     const display = await page.locator('data-testid='+string).innerText();
     expect(display).toBe(string2);
@@ -51,6 +59,18 @@ When('The user opens the cell: {string}', async (string) => {
 
 When('The user flags the cell: {string}', async (string) =>{
   await flagCell(string);
+});
+
+When('The user unflags the cell: {string}', async (string) =>{
+  await unflagCell(string);
+});
+
+When('The user marks the cell: {string}', async (string) =>{
+  await markCell(string);
+});
+
+When('The user unmarks the cell: {string}', async (string) =>{
+  await unmarkCell(string);
 });
 
 Then('The cell {string} reveals: {string}', async (string, string2) =>{

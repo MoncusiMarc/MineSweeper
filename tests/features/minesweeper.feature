@@ -34,7 +34,7 @@ Feature: Minesweeper Testing Features
 
 @done
     Scenario: Default mines value; number of mines - number of flags
-        Then The 'Mines Counter' shows: '17' 
+        Then The 'Mines Counter' shows: '17'
 
 @done
     Scenario: Opening a mined cell and ending the game
@@ -70,52 +70,59 @@ Feature: Minesweeper Testing Features
             | * | * |   | * |   |   |
             |   | * | * | * |   |   |
 
-@current
+@done
     Scenario: Flagging a cell when the user is certain there is a mine
         Given The 'Mines Counter' shows: '17'
         When The user flags the cell: '1-1'
         Then The cell '1-1' reveals: '!'
         And The 'Mines Counter' shows: '16'
-    
+
+@done
     Scenario: Unflagging a cell to the normal state of the cell
         Given The cell '1-1' is flagged
         And The 'Mines Counter' shows: '16'
         When The user unflags the cell: '1-1'
-        Then The cell '1-1' reveals: ' '
+        Then The cell '1-1' reveals: ''
         And The 'Mines Counter' shows: '17'
 
+@done
     Scenario: Marking a cell when the user is unsure of the cell's content
         Given The 'Mines Counter' shows: '17'
         When The user marks the cell: '1-1'
         Then The cell '1-1' reveals: '?'
-        And The 'Mines counter' shows: '17' 
-    
+        And The 'Mines Counter' shows: '17'
+
+@done
     Scenario: Unmarking a cell
-        Given The cell '1-1' us marked
+        Given The cell '1-1' is marked
         And The 'Mines Counter' shows: '17'
         When The user unmarks the cell: '1-1'
-        Then The cell '1-1' reveals: ' '
+        Then The cell '1-1' reveals: ''
         And The 'Mines Counter' shows: '17'
-    
+
+@done
     Scenario: Opening a flagged cell hiding a number
         Given The cell '2-2' is flagged
-        And The 'Mines Counter' shows:'16'
+        And The 'Mines Counter' shows: '16'
         When The user opens the cell: '2-2'
         Then The cell '2-2' reveals: '8'
         And The 'Mines Counter' shows: '17'
 
+@current
     Scenario: Opening a flagged cell hiding a mine
         Given The cell '1-1' is flagged
         And The 'Mines Counter' shows: '16'
-        When The user opens the cell 'A1'
-        Then The cell '2-2' reveals: '*'
+        When The user opens the cell: '1-1'
+        Then The cell '1-1' reveals: '*'
         And The 'Mines Counter' shows: '16'
 
+@done
     Scenario: Opening a marked cell
         Given The cell '2-2' is marked
         When The user opens the cell: '2-2'
         Then The cell '2-2' reveals: '8'
-    
+
+
     Scenario: Opening a mined cell with flagged cells on the board, those correctly flagged won't change, those incorrectly flagged will change to 'X'
         Given The user flaggs the cells:
         """
@@ -131,7 +138,7 @@ Feature: Minesweeper Testing Features
             | * | * |   | * | X |   |
             |   | * | * | * |   | X |
             And The 'Mines Counter' shows: '11'
-        
+
     Scenario: Opening a mined cell with marked cells on the board, the mines will show, the numbered ones won't change
         Given The user marks the cells:
         """

@@ -4,7 +4,6 @@ Feature: Mouse Features
         When The user left-clicks with the mouse the cell: '1-1'
         Then The cell '1-1' opens
 
-    //can we right click from a cell's state?
     Scenario: Flagging a cell with the mouse, '!'
         When The user right-clicks with the mouse the cell: '1-1'
         Then The cell '1-1' is flagged

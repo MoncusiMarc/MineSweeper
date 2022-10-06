@@ -2,14 +2,13 @@ const minesCounter = document.querySelector('[data-mCounter]')
 const timerCounter = document.querySelector('[data-tCounter]')
 const newGame = document.querySelector('[data-newGame]')
 const gameState = document.querySelector('[data-gameState]')
-const container = document.getElementById("container");
+const container = document.getElementById("container")
 
 const ms = new minesweeper(testingMap);
 
-
 window.onload = function () {
   generateBoard()
-  setMinesCounter()
+  updateMinesCounter()
 }
 
 function generateBoard(){
@@ -27,13 +26,30 @@ function generateBoard(){
   }
 }
 
+function updateGame(){
+  switch(ms.getGameState()){
+    case 'lost':
+      gameState.innerText = 'Game Lost'
+
+      break;
+    case 'won':
+      gameState.innerText = 'Game Won'
+      break;
+    default:
+      updateMinesCounter()
+      updateBoard()
+      break;
+  }
+    
+
+}
+
 function updateBoard(){
   for(let i = 1; i <= ms.rows; i++){
     for(let j = 1; j <= ms.cols; j++){
       let boardCell = ms.getCell(i-1,j-1)
       let cellVal = i+'-'+j
       let cell = document.getElementById(cellVal)
-
       switch(boardCell.state){
         case 'flagged':
           cell.innerText = '!'
@@ -50,23 +66,20 @@ function updateBoard(){
     }
   }
 }
-
-function checkState(){
-  switch(ms.getGameState()){
-    case 'lost':
-      gameState.innerText = 'Game Lost';
-      break;
-    case 'won':
-      gameState.innerText = 'Game Won';
-      break;
-    default:
-      break;
-  }
-}
-
-function setMinesCounter(){
+function updateMinesCounter(){
   var mc = document.getElementById('minesCounter')
   mc.innerText = ms.getMines();
+}
+
+function lostBoard(){
+  for(let i = 1; i <= ms.rows; i++){
+    for(let j = 1; j <= ms.cols; j++){
+      let boardCell = ms.getCell(i-1,j-1)
+      let cellVal = i+'-'+j
+      let cell = document.getElementById(cellVal)
+      
+    }
+  }
 }
 
 function nextCellState(cell,row,col){
@@ -80,24 +93,24 @@ function nextCellState(cell,row,col){
     case '?':
       ms.noStateCell(row-1,col-1)
       break;
-    default:
-      break;
   }
 }
 function cellListener(cell, row, col){
-  cell.addEventListener('click',function(event){
-    console.log('click')
+  cell.addEventListener('contextmenu', e=> e.preventDefault())
+  cell.addEventListener('mousedown',function(event){
+    console.log(event)
+    if(!ms.getCell(row-1,col-1).opened){
     switch(event.which){
         case 1:
           ms.openCell(row-1,col-1)
           break
-        case 2:
+        case 3:
           nextCellState(cell,row,col)
           break
         default:
           break
     }
-    updateBoard()
-    checkState()
+    updateGame()
+  }
   });
 }

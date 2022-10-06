@@ -44,24 +44,49 @@ class minesweeper {
         return [[cols,rows,mines],board]
     }
 
-    flagCell(row,col){this.board[row][col].state = 'flagged'}
+    flagCell(row,col){
+        this.board[row][col].state = 'flagged'
+        this.calculateMines()
+    }
 
-    markCell(row,col){this.board[row][col].state = 'marked'}
+    markCell(row,col){
+        this.board[row][col].state = 'marked'
+        this.calculateMines()
+    }
 
-    noStateCell(row,col){this.board[row][col].state = 'none'}
+    noStateCell(row,col){
+        this.board[row][col].state = 'none'
+        this.calculateMines();
+    }
+
+    calculateMines(){
+        let tempMines=0
+        this.board.forEach(row => {
+            row.forEach(cell =>{
+                if(cell.content == '*'){
+                    tempMines++;
+                }
+                if(cell.state == 'flagged'){
+                    tempMines--;
+                }
+            })
+        })
+        this.mines = tempMines;
+    }
 
     openCell(row,col){
         this.board[row][col].opened = true
         switch(this.board[row][col].content){
             case '*':
                 this.gameState = 'lost'
-                this.openAllMines();
+                this.openAllMines()
                 break
             case '.':
                 this.board[row][col].content = this.countAdjCells(row,col)
                 if(this.board[row][col].content==0){
                     this.openAdjacentCells(row,col)
                 }
+                this.noStateCell(row,col)
                 break
         }
     }
