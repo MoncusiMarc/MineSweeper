@@ -78,7 +78,6 @@ class minesweeper {
         this.board[row][col].opened = true
         switch(this.board[row][col].content){
             case '*':
-                this.gameState = 'lost'
                 this.openAllMines()
                 this.board[row][col].state = 'none'
                 break
@@ -88,8 +87,10 @@ class minesweeper {
                     this.openAdjacentCells(row,col)
                 }
                 this.noStateCell(row,col)
+                
                 break
-        }
+            }    
+        this.gameState = this.checkGameState();
     }
 
     openAdjacentCells(row,col){
@@ -99,7 +100,9 @@ class minesweeper {
                     continue}
                 if(j<0 || j>=this.cols){
                     continue}
-                if(!this.board[row][col].opened){
+                if(this.board[i][j].opened){
+                    continue}
+                if(this.board[i][j].state == 'flagged'){
                     continue}
                 this.openCell(i,j);
             }
@@ -130,5 +133,23 @@ class minesweeper {
                 }
             }
         }
+    }
+
+    checkGameState(){
+        for(let i = 0; i < this.rows; i++){
+            for (let j = 0; j < this.cols; j++) {
+                if(!this.board[i][j].opened){
+                    if(this.board[i][j].content != '*'){
+                        return 'none'
+                    }
+                }
+                if(this.board[i][j].opened){
+                    if(this.board[i][j].content == '*'){
+                        return 'lost'
+                    }
+                }
+            }
+        }
+        return 'won'
     }
 }

@@ -7,22 +7,22 @@ const testingUrl = 'http://127.0.0.1:5500/src/html/testing.html';
 async function interactCell(interaction,cell){
   switch(interaction){
     case 'opens':
-      await page.click(`[data-testId="${cell}"]`, { force: true });
+      await page.click(`[data-testid="${cell}"]`, { force: true });
       break;
     case 'flags':
     case 'flagged':
-      while( await page.locator('data-testid='+cell).innerText() != '!'){
-        await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
+        while( await page.locator('data-testid='+cell).innerText() != '!'){
+        await page.click(`[data-testid="${cell}"]`, { button: 'right', force: true });}
       break
     case 'marks':
     case 'marked':
       while( await page.locator('data-testid='+cell).innerText() != '?'){
-        await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
+        await page.click(`[data-testid="${cell}"]`, { button: 'right', force: true });}
       break
-      case 'unflags':
+    case 'unflags':
     case 'unmarks':
       while( await page.locator('data-testid='+cell).innerText() != ''){
-        await page.click(`[data-testId="${cell}"]`, { button: 'right', force: true });}
+        await page.click(`[data-testid="${cell}"]`, { button: 'right', force: true });}
       break
     default:
       return 'pending'
@@ -33,20 +33,18 @@ async function CheckTable(twoDTable){
   for(let i=1;i<=twoDTable.length;i++){
     for(let j=1;j<=twoDTable[0].length;j++){
       var cell = await page.locator('data-testid='+i+'-'+j).innerText()
-      if(twoDTable[i-1][j-1] == '*' && cell != '*'){return 'failed'}
+      if(twoDTable[i-1][j-1] ==  cell) {return 'failed'}
     }
   }
   return 'passed'
 }
 
 async function SplitDocString(interaction,docString){
-  const CellArray = docString.split(",")
-  CellArray.forEach(cell => {
-    interactCell(interaction,cell)
-  });
+  const CellArray = await docString.split(",")
+  for(let i=0;i<CellArray.length;i++){
+    await interactCell(interaction,CellArray[i])
+  }
 }
-
-
 
 Given('The Testing Webpage is initiated',async () => {
   await page.goto(testingUrl);
@@ -81,4 +79,9 @@ Then('The game board should show', async (dataTable) => {
 Then('The game is over', async () => {
   const alert = await page.locator('data-testid=Game State').innerText();
   expect(alert).toBe('Game Lost');
+});
+
+Then('The Game is won', async () => {
+  const alert = await page.locator('data-testid=Game State').innerText();
+  expect(alert).toBe('Game Won');
 });

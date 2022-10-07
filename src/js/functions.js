@@ -4,7 +4,12 @@ const newGame = document.querySelector('[data-newGame]')
 const gameState = document.querySelector('[data-gameState]')
 const container = document.getElementById("container")
 
-const ms = new minesweeper(testingMap);
+var ms = null 
+if(window.location.href.indexOf("testing") > -1){
+  ms = new minesweeper(testingMap);
+}else{
+  ms = new minesweeper();
+}
 
 window.onload = function () {
   generateBoard()
@@ -33,7 +38,6 @@ function updateGame(){
 }
 
 function updateBoard(){
-  console.log('hi')
   for(let i = 1; i <= ms.rows; i++){
     for(let j = 1; j <= ms.cols; j++){
       let boardCell = ms.getCell(i-1,j-1)
@@ -53,7 +57,6 @@ function updateBoard(){
             break
         }
       }else{
-        console.log('hi2')
         if(boardCell.content == '*' && boardCell.state == 'flagged'){
           cell.innerText = '!'
         }
@@ -63,8 +66,7 @@ function updateBoard(){
   }
 }
 function updateMinesCounter(){
-  var mc = document.getElementById('minesCounter')
-  mc.innerText = ms.getMines();
+  minesCounter.innerText = ms.getMines();
 }
 
 function nextCellState(cell,row,col){
@@ -89,6 +91,7 @@ function updateState(){
       gameState.innerText = 'Game Won';
       break;
     default:
+      gameState.innerText = '';
       break;
   }
 }
@@ -96,7 +99,6 @@ function updateState(){
 function cellListener(cell, row, col){
   cell.addEventListener('contextmenu', e=> e.preventDefault())
   cell.addEventListener('mousedown',function(event){
-    console.log(event)
     if(!ms.getCell(row-1,col-1).opened){
     switch(event.which){
         case 1:
@@ -112,3 +114,7 @@ function cellListener(cell, row, col){
   }
   });
 }
+newGame.addEventListener('click', () =>{
+  ms = new minesweeper()
+  updateGame()
+})

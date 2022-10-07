@@ -122,7 +122,7 @@ Feature: Minesweeper Testing Features
         When The user 'opens' the cell: '2-2'
         Then The cell '2-2' reveals: '8'
 
-@current
+@done
     Scenario: Opening a mined cell with flagged cells on the board, those correctly flagged won't change, those incorrectly flagged will change to 'X'
         Given The user 'flags' the cells:
         """
@@ -137,9 +137,9 @@ Feature: Minesweeper Testing Features
             |   |   | * | ! |   |   |
             | * | * |   | * | X |   |
             |   | * | * | * |   | X |
-            And The 'Mines Counter' shows: '11'
+        And The 'Mines Counter' shows: '11'
 
-
+@done
     Scenario: Opening a mined cell with marked cells on the board, the mines will show, the numbered ones won't change
         Given The user 'marks' the cells:
         """
@@ -156,6 +156,7 @@ Feature: Minesweeper Testing Features
             |   | * | * | * |   | ? |
         And The 'Mines Counter' shows: '17'
 
+@done
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if another '0' cell is found open adjacents (recursivity)
         When The user 'opens' the cell: '1-6'
         Then The game board should show
@@ -166,21 +167,23 @@ Feature: Minesweeper Testing Features
             |   |   |   |   | 3 | . |
             |   |   |   |   | 2 | . |
 
+@current
     Scenario: Opening the last not mined cell and winning the game
         Given The user 'opens' the cells:
         """
         1-6,2-2,3-4,4-1,4-2,5-3,6-1
         """
-        When the user 'opens' the cell: '1-4'
-        Then the cell '1-4' reveals: '3'
-        And the Game is won
+        When The user 'opens' the cell: '1-4'
+        Then The cell '1-4' reveals: '3'
+        And The Game is won
 
+@done
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '!' cell is found cells that cell doesn't open
         Given The user 'flags' the cells:
         """
         3-5,3-6
         """
-        When The user 'opens' with the cell: '1-6'
+        When The user 'opens' the cell: '1-6'
         Then The game board should show
             |   |   |   |   | 1 | . |
             |   |   |   |   | 1 | . |
@@ -189,12 +192,13 @@ Feature: Minesweeper Testing Features
             |   |   |   |   |   |   |
             |   |   |   |   |   |   |
 
+@done
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '?' cell is found it gets opened normally
         Given The user 'marks' the cells:
         """
         3-5,3-6
         """
-        When The user 'opens' with the cell: '1-6'
+        When The user 'opens' the cell: '1-6'
         Then The game board should show
             |   |   |   |   | 1 | . |
             |   |   |   |   | 1 | . |
