@@ -6,7 +6,7 @@ const defaultCell = {
 
 class minesweeper {
     constructor(map=this.mapCreate()){
-        this.board = map[1]
+        this.board = JSON.parse(JSON.stringify(map[1])); 
         this.rows = map[0][0]
         this.cols = map[0][1]
         this.mines = map[0][2]

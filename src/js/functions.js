@@ -115,6 +115,10 @@ function cellListener(cell, row, col){
   });
 }
 newGame.addEventListener('click', () =>{
-  ms = new minesweeper()
+  if(window.location.href.indexOf("testing") > -1){
+    ms = new minesweeper(testingMap);
+  }else{
+    ms = new minesweeper();
+  }
   updateGame()
 })
