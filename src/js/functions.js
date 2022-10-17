@@ -101,18 +101,20 @@ function updateState() {
 function cellListener(cell, row, col) {
     cell.addEventListener('contextmenu', (e) => e.preventDefault())
     cell.addEventListener('mousedown', function (event) {
-        if (!ms.getCell(row - 1, col - 1).opened) {
-            switch (event.which) {
-                case 1:
-                    ms.openCell(row - 1, col - 1)
-                    break
-                case 3:
-                    nextCellState(cell, row, col)
-                    break
-                default:
-                    break
+        if(ms.getGameState() != 'lost'){
+            if (!ms.getCell(row - 1, col - 1).opened) {
+                switch (event.which) {
+                    case 1:
+                        ms.openCell(row - 1, col - 1)
+                        break
+                    case 3:
+                        nextCellState(cell, row, col)
+                        break
+                    default:
+                        break
+                }
+                updateGame()
             }
-            updateGame()
         }
     })
 }
