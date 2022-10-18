@@ -47,20 +47,33 @@ function updateBoard() {
                         if (
                             boardCell.content != '*' &&
                             ms.getGameState() == 'lost'
-                        )
+                        ){
                             cell.innerText = 'X'
-                        else cell.innerText = '!'
+                            cell.setAttribute('data-ms','ex')
+                        }
+                        else{
+                            cell.innerText = '!'
+                            cell.setAttribute('data-ms','flagged')
+                        }
                         break
                     case 'marked':
                         cell.innerText = '?'
+                        cell.setAttribute('data-ms', 'marked')
                         break
                     case 'none':
                         cell.innerText = ''
+                        cell.removeAttribute('data-ms')
                         break
                 }
             } else {
-                if (boardCell.content == '*' && boardCell.state == 'flagged') cell.innerText = '!'
-                else cell.innerText = boardCell.content
+                if (boardCell.content == '*' && boardCell.state == 'flagged') {
+                    cell.innerText = '!'
+                    cell.setAttribute('data-ms','flagged')
+                }
+                else {
+                    cell.innerText = boardCell.content
+                    cell.setAttribute('data-ms','opened')
+                }
             }
         }
     }
