@@ -175,7 +175,7 @@ Feature: Minesweeper Testing Features
         """
         When The user 'opens' the cell: '1-4'
         Then The cell '1-4' reveals: '3'
-        And The Game is won
+        And The game is won
 
 @done
     Scenario: Opening a cell with the number '0' opens the adjacent cells, if a '!' cell is found cells that cell doesn't open

@@ -58,14 +58,14 @@ Given('The user {string} the cells:', async (string,docString) => {
   await SplitDocString(string,docString)
 });
 
+When('The user {string} the cell: {string}', async (string, string2) => {
+    await interactCell(string,string2)
+  });
+
 Then('The {string} shows: {string}', async (string, string2) =>{
   const display = await page.locator('data-testid='+string).innerText();
   expect(display).toBe(string2);
 });
-
-When('The user {string} the cell: {string}', async (string, string2) => {
-    await interactCell(string,string2)
-  });
 
 Then('The cell {string} reveals: {string}', async (string, string2) =>{
   const cell = await page.locator('data-testid='+string).innerText();
@@ -81,7 +81,7 @@ Then('The game is over', async () => {
   expect(alert).toBe('Game Lost');
 });
 
-Then('The Game is won', async () => {
+Then('The game is won', async () => {
   const alert = await page.locator('data-testid=Game State').innerText();
   expect(alert).toBe('Game Won');
 });
